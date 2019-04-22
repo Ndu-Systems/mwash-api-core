@@ -26,7 +26,38 @@ namespace FreedomCode.Api.Services
 
         public User AuthenticateUser(string username, string password)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
+            //var user = _context.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
+            var queryuser = _context.Users.Join(
+                _context.UserAppVariableType,
+                userA => userA.UserId,
+                userAppA => userAppA.UserId,
+                (userA, userAppA) => new
+                {
+                    User = userA,
+                    userAppA
+                })
+                .Join(
+                    _context.AppVariableType,
+                    userAppVar => userAppVar.userAppA.AppVariableTypeId,
+                    appVarA => appVarA.AppVariableTypeId,
+                    (userAppVar,appVarA) => new
+                    {
+                        userAppVar.User,
+                        appVarA.Name
+                    }
+                )
+                .Where(u => u.User.Username == username && u.User.Password == password)
+                .Take(1);
+
+            User user = null;
+            string role = null;
+
+            foreach (var u in queryuser)
+            {
+                user = u.User;
+                role = u.Name;
+            };
+
             // return null if user not found.
             if (user == null) return null;
 
@@ -36,8 +67,8 @@ namespace FreedomCode.Api.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -50,7 +81,6 @@ namespace FreedomCode.Api.Services
             user.Password = null;
 
             return user;
-
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -63,7 +93,7 @@ namespace FreedomCode.Api.Services
 
         public User GetUserById(int id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
             if (user != null) user.Password = null; // returns user without a password
             return user;
         }
