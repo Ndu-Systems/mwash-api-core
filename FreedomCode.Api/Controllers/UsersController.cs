@@ -34,17 +34,31 @@ namespace FreedomCode.Api.Controllers
             return Ok(user);
         }
         // GET: api/users
+        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_userService.GetAllUsers());
+            var userList = _userService.GetAllUsers();
+            if (userList == null) return NotFound(new { message = "No users returned contact system administrator" });
+
+            return Ok(userList);
         }
 
         // GET api/users/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_userService.GetUserById(id));
+            var user = _userService.GetUserById(id);
+            if (user == null) return NotFound();
+
+            // only allow admins to access other user records
+            var currentUserId = int.Parse(User.Identity.Name);
+            if(id != currentUserId && !User.IsInRole(Role.Admin))
+            {
+                return Forbid();
+            }
+
+            return Ok(user);
         }        
     }
 }
