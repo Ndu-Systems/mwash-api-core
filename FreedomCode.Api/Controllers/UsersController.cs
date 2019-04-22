@@ -26,7 +26,12 @@ namespace FreedomCode.Api.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User userParam)
         {
-            return Ok(userParam);
+            var user = _userService.AuthenticateUser(userParam.Username, userParam.Password);
+
+            if (user == null)
+                return BadRequest(new { message = "Invalid Email or Password" }); // can be described in an enum ValidationEnum?
+
+            return Ok(user);
         }
         // GET: api/users
         [HttpGet]

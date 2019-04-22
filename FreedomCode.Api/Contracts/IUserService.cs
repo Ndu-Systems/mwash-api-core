@@ -10,7 +10,6 @@ namespace FreedomCode.Api.Contracts
     {
         User AuthenticateUser(string username, string password);
         IEnumerable<User> GetAllUsers();
-
         User GetUserById(int id);
     }
 }
