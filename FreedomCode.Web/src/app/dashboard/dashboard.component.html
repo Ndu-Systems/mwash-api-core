@@ -1,0 +1,70 @@
+<header>
+  <nav class="topnav">
+    <ul>
+      <li>
+        <a routerLink="dashboard">
+
+          <img src="assets/images/dashboard/dash-logo.svg" alt="dashboard logo">
+        </a>
+      </li>
+      <li>
+        <h1>
+          <span class="main">
+            logger.
+          </span>
+        </h1>
+      </li>
+      <li class="account">
+        <div class="col-1-of-2">
+          <img src="assets/images/dashboard/user.svg" alt="user image">
+          <div class="dropdown">
+            <button class="dropbtn">{{username}}
+              <img src="assets/images/dashboard/arrow.svg" alt="down-arrow">
+            </button>
+            <div class="dropdown-content">
+              <a routerLink="dashboard">my profile</a>
+              <a routerLink="dashboard">settings</a>
+              <a routerLink="" (click)="logout()">Logout</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <nav class="mobile-nav">
+    <div class="col-1-of-3">
+      <svg width="30" height="30" id="icoOpen">
+        <path d="M0,5 30,5" stroke="#fff" stroke-width="5" />
+        <path d="M0,14 30,14" stroke="#fff" stroke-width="5" />
+        <path d="M0,23 30,23" stroke="#fff" stroke-width="5" />
+      </svg>
+      <img src="assets/images/dashboard/dash-logo.svg" alt="dashboard logo" class="logo">     
+      <div class="dropdown">
+          <img src="assets/images/dashboard/menu-dots.svg" alt="dotted menu" class="dropbtn">
+          <div class="dropdown-content">
+            <a routerLink="dashboard">my profile</a>
+            <a routerLink="dashboard">settings</a>
+            <a (click)="logout()">Logout</a>
+          </div>
+        </div>
+    </div>
+  </nav>
+</header>
+<div class="sidenav">
+  <ul *ngIf="isAdmin else userMenu;">
+    <li><a routerLink="dashboard">dashboard</a></li>
+    <li><a routerLink="dashboard">jobs</a></li>
+    <li><a routerLink="dashboard">staff</a></li>    
+    <li><a routerLink="dashboard">settings</a></li>
+  </ul>
+  <ng-template #userMenu>
+       <ul>
+          <li><a routerLink="dashboard">dashboard</a></li>
+          <li><a routerLink="dashboard" *ngIf="isUser">my logs</a></li>
+          <li><a routerLink="dashboard">settings</a></li>
+       </ul>
+  </ng-template>
+</div>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
