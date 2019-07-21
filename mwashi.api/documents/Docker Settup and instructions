@@ -1,0 +1,29 @@
+
+
+
+====================================================================================
+
+
+docker build -t ndusystems2019/mwashi.api .
+docker run -it --rm ndusystems2019/mwashi.api
+
+docker run -d -p 8300:80 --name mwashapp ndusystems2019/mwashi.api --- creates a new docker image run once.
+0af2756843c5e801d3ed35a2a1fe3abf2e7989592ca9b09a99f8919a9808a95b (working image)
+
+
+docker push ndusystems2019/mwashi.api --- push to docker after building he image. (TODO: findout how to update the image with latest code)
+
+
+========================================================================================
+
+to delete while I was testing creation of images
+d6fd3b57137631a024ba90c2e53d61b18a03d3495858b9318b69f05f8275462a
+01a994f940c9e040ff96565165d6d49f14ec655ae74245641bed06c481dfa32d
+
+
+=========================================================================================
+
+image queries and removal of dangling images 
+
+docker images -a --- lists all the docker images
+
