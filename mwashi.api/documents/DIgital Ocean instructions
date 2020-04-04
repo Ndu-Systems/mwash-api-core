@@ -1,5 +1,5 @@
 
-
+https://cloud.digitalocean.com
 
 ====================================================================================
 Login: Use (ndu.systems@gmail.com) Sign in with google client
@@ -16,3 +16,14 @@ login: root
 password: Harder01!
 
 ===========================
+
+Pull changes from docker container
+docker pull ndusystems2019/fundani.api
+
+docker run -p 80:80 ndusystems2019/fundani.api
+
+
+=======================================================================================
+exposed API: 
+
+

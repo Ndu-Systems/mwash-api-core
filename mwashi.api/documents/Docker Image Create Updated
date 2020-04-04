@@ -1,0 +1,17 @@
+Source : https://dzone.com/articles/how-to-run-docker-container-on-your-local-machine
+
+step 1: Build Docker Image
+docker build -t {{image-name}} .
+
+docker build -t ndusystems2019/fundani.api .
+
+step 2: run docker image
+docker run -p 8600:80 -it {{image-name}}
+
+docker run -p 8600:80 -it fundani.api
+to stop image = ctr + c
+
+
+Step 3: After testing that everything works as expected Push.
+docker push ndusystems2019/fundani.api 
+
